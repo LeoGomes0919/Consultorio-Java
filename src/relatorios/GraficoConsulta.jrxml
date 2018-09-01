@@ -118,7 +118,7 @@ GROUP BY id_consulta, datahora, paciente_idpaciente, medico_idmedico, sistole, d
 	<detail>
 		<band height="328" splitType="Stretch">
 			<lineChart>
-				<chart evaluationTime="Report">
+				<chart>
 					<reportElement x="4" y="0" width="798" height="328" uuid="443a2f76-366f-4f3d-b16b-f4f73c380162"/>
 					<chartTitle/>
 					<chartSubtitle/>
