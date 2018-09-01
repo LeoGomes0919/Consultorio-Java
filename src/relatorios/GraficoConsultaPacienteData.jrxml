@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consultorio" language="groovy" pageWidth="842" pageHeight="740" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7114a598-bf9d-451e-875b-eee357779795">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="QueryConsulta" uuid="48deab76-271f-4fab-afe5-29f8cb32cedf">
+		<queryString>
+			<![CDATA[SELECT diastole, sistole, pac_nome, id_paciente, datahora  FROM tbl_consulta
+		INNER JOIN tbl_paciente ON tbl_consulta.paciente_idpaciente = tbl_paciente.id_paciente
+
+	WHERE pac_nome LIKE '%MANOEL%' AND datahora BETWEEN '27/08/2018' AND '30/08/2018'
+		GROUP BY diastole, pac_nome, id_paciente, sistole, datahora
+ORDER BY datahora ASC;]]>
+		</queryString>
+		<field name="diastole" class="java.math.BigDecimal"/>
+		<field name="sistole" class="java.math.BigDecimal"/>
+		<field name="pac_nome" class="java.lang.String"/>
+		<field name="id_paciente" class="java.lang.Integer"/>
+		<field name="datahora" class="java.lang.String"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT diastole, sistole, pac_nome, id_paciente, datahora  FROM tbl_consulta
+		INNER JOIN tbl_paciente ON tbl_consulta.paciente_idpaciente = tbl_paciente.id_paciente
+
+	WHERE pac_nome LIKE '%MANOEL%' AND datahora BETWEEN '27/08/2018' AND '30/08/2018'
+		GROUP BY diastole, pac_nome, id_paciente, sistole, datahora
+ORDER BY datahora ASC;]]>
+	</queryString>
+	<field name="diastole" class="java.math.BigDecimal"/>
+	<field name="sistole" class="java.math.BigDecimal"/>
+	<field name="pac_nome" class="java.lang.String"/>
+	<field name="id_paciente" class="java.lang.Integer"/>
+	<field name="datahora" class="java.lang.String"/>
+	<group name="Group1"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="31" uuid="e5863cf3-ff7d-4673-b91d-9ae12f53a8c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CORCLINIC]]></text>
+			</staticText>
+			<image>
+				<reportElement x="4" y="0" width="241" height="41" uuid="97832d07-16f7-4d4c-884e-9048d650958c"/>
+				<imageExpression><![CDATA["C:\\Users\\leogo\\Google Drive\\Consultorio\\Consultorio\\src\\icons\\1.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="24" uuid="a1297221-d9c4-450a-b52c-525eeb044e5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GRÁFICO DEMOSTRATIVO POR DATA DO PACIENTE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="3" y="25" width="799" height="20" uuid="cc7eadf2-17a1-4961-9fd2-fa19cd6a86b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pac_nome}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="328" splitType="Stretch">
+			<lineChart>
+				<chart>
+					<reportElement x="4" y="0" width="798" height="328" uuid="443a2f76-366f-4f3d-b16b-f4f73c380162"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="QueryConsulta" uuid="90c7fac2-5d51-4c75-a1b2-29b6e6ad2551"/>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Sistólica"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{datahora}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{sistole}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Diastólica"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{datahora}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{diastole}]]></valueExpression>
+						<labelExpression><![CDATA[$F{pac_nome}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="41" width="802" height="20" uuid="29526bc8-c825-470f-a7b6-6e869cb832a7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[RUA FLORENCIO MACHADO, 480, SALA 04 SALA 05, SETOR CENTRAL, CEP 77803-020, ARAGUAINA - TO ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="22" width="802" height="19" uuid="186256b7-e89a-4fa7-b773-20688599bee3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HOLANDA & SILVA]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="3" y="70" width="799" height="1" uuid="06561191-1305-4541-be0d-65a7caff6d1e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="802" height="24" forecolor="#000000" backcolor="#FFFFFF" uuid="a69c3755-421a-41ac-8b4b-e6168e011d94"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="3" y="0" width="197" height="24" forecolor="#000000" backcolor="#000000" uuid="f0749a5e-9406-4df4-a77b-b490b7c6818e"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="682" y="0" width="80" height="24" forecolor="#000000" backcolor="#000000" uuid="b148bfc5-ad0c-42c0-913e-7ba645eab237"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="762" y="0" width="40" height="24" forecolor="#000000" backcolor="#000000" uuid="a8f8385b-9db6-44d6-9222-897818f3558b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
